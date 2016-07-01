@@ -71,4 +71,4 @@ gulp.task('serve',function(){
 });
 
 
-gulp.task('default',['vendor']);
+gulp.task('default',['vendor','root','html','ijs','js','sass','serve']);
