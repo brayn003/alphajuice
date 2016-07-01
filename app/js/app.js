@@ -1,9 +1,3 @@
-/*
-Todo:
-	1) Replace alert() with something better
-
-*/
-
 var app = angular.module('alphaJuice', []);
 
 app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$interval,$log,$http){
@@ -24,8 +18,8 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 
 	$http.get('wordlist.json').success(function(data) {
 	    $scope.dictionary = data;
-		});
-
+	    alert($scope.dictionary.words.indexOf('hi'));
+	});
 	var requestInterval;
 	var generating = 0;
 
@@ -38,11 +32,6 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 		return 1 + Math.floor(Math.random() * 36);
 	};
 
-	function isWordVaild(word){
-		if($scope.dictionary.words.indexOf(word) == -1)
-			return false
-		return true
-	};
 
 	// non generic funtions
 	function startRequest(){
@@ -80,16 +69,22 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 		// alert(JSON.stringify(req));
 	};
 
-	function indexof(){
-		if(isWordVaild($scope.blender.word)){
-			for (var i = 0; i < $scope.blender.word.length; i++) {
-				delete $scope.audience.request[$scope.audience.request.indexOf($scope.blender.word[i])];
-			}
-			startRequest();
-		}else{
-			alert('Not a vaild english word')
-		}
+	function isWordVaild(word){
+		if($scope.dictionary.words.indexOf(word) == -1)
+			return false
+		return true
 	};
+
+	function indexof(){
+			if(isWordVaild($scope.blender.word)){
+				for (var i = 0; i < $scope.blender.word.length; i++) {
+					delete $scope.audience.request[$scope.audience.request.indexOf($scope.blender.word[i])];
+				}
+				startRequest();
+			}else{
+				alert('Not a vaild english word')
+			}
+		};
 
 	startRequest();
 

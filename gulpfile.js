@@ -8,11 +8,11 @@ var lib = {
 		'vendor': {
 			'js' : [
 				'./bower_components/angular/angular.js',
-				'./bower_components/phaser/phaser.js'
+				'./bower_components/phaser/build/phaser.js'
 			]
 		}
 	};
-		
+
 gulp.task('vendor',function(){
 	gulp.src(lib.vendor.js)
 	.pipe(concat('vendor.js'))
@@ -37,7 +37,7 @@ gulp.task('sass',function(){
 
 gulp.task('js',function(){
 	gulp.src('./templates/**/*.js')
-	.pipe(uglify())
+	// .pipe(uglify())
 	.pipe(gulp.dest('./app/templates/'));
 	browserSync.reload();
 	// .pipe(browserSync.stream());
