@@ -1,5 +1,4 @@
-var GameState = {
-
+var gameState = {
   preload: function(){
 
   },
