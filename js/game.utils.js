@@ -3,6 +3,7 @@ function game(letterFrequencyJson,wordlistJson){
 	this.wordlistJson = wordlistJson;
 	this.letterFrequency;
 	this.wordlist;
+	
 	// this.requestInterval;
 	var generating = 0;
 	var _this = this;
@@ -27,7 +28,7 @@ function game(letterFrequencyJson,wordlistJson){
 			_this.wordlist = data.words;
 		}, "json" );
 	};
-	
+
 	this.generateLetter = function() {
 	    var	cumilativeFrequency = 0,
     		randomSeed = (Math.random() * 100),
@@ -42,7 +43,7 @@ function game(letterFrequencyJson,wordlistJson){
     			return _this.letterFrequency[i].letter
     		}
 	    }
-	    
+
 	};
 
 	this.generateNumber = function(){
