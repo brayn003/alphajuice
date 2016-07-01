@@ -51,6 +51,12 @@ gulp.task('ijs',function(){
 	// .pipe(browserSync.stream());
 });
 
+gulp.task('root',function(){
+	gulp.src('./root/**/*')
+	.pipe(gulp.dest('./app/'));
+	browserSync.reload();
+});
+
 gulp.task('serve',function(){
 	browserSync.init({
 		'server': {
@@ -61,6 +67,7 @@ gulp.task('serve',function(){
 	gulp.watch('./sass/*.scss', ['sass']);
 	gulp.watch('./templates/*.js', ['js']);
 	gulp.watch('./js/**/*.js', ['ijs']);
+	gulp.watch('./root/**/*', ['root']);
 });
 
 
