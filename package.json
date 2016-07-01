@@ -1,0 +1,27 @@
+{
+  "name": "alphajuice",
+  "version": "1.0.0",
+  "description": "The game AlphaJuice",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/brayn003/alphajuice.git"
+  },
+  "author": "brayn003@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brayn003/alphajuice/issues"
+  },
+  "homepage": "https://github.com/brayn003/alphajuice#readme",
+  "devDependencies": {
+    "bower": "^1.7.9",
+    "browser-sync": "^2.13.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.1",
+    "gulp-uglify": "^1.5.3"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "alphajuice",
+  "homepage": "https://github.com/brayn003/alphajuice",
+  "authors": [
+    "brayn003 <brayn003@gmail.com>"
+  ],
+  "description": "The game AlphaJuice",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.6",
+    "phaser": "^2.4.8"
+  }
+}
