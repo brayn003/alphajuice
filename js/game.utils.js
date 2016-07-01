@@ -39,7 +39,7 @@ function game(letterFrequencyJson,wordlistJson){
     		if (cumilativeFrequency > randomSeed) {
     			// alert(letterFrequency[i].letter);
     			// console.log(JSON.stringify(_this.letterFrequency));
-	    		console.log("randomSeed : " + randomSeed + ", letter : " + _this.letterFrequency[i].letter);
+	    		// console.log("randomSeed : " + randomSeed + ", letter : " + _this.letterFrequency[i].letter);
     			return _this.letterFrequency[i].letter
     		}
 	    }
@@ -103,6 +103,6 @@ function game(letterFrequencyJson,wordlistJson){
 	};
 }
 
-var alphaJuice = new game('letter-frequency.json','wordlist.json');
-alphaJuice.init();
-alphaJuice.startRequest();
+// var alphaJuice = new game('letter-frequency.json','wordlist.json');
+// alphaJuice.init();
+// alphaJuice.startRequest();
