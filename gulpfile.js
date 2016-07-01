@@ -8,7 +8,7 @@ var lib = {
 		'vendor': {
 			'js' : [
 				'./bower_components/angular/angular.js',
-				'./bower_components/phaser/phaser.js'
+				'./bower_components/phaser/build/phaser.js'
 			]
 		}
 	};

@@ -13,13 +13,22 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 
 	};
 
+	function game () {
+		// this.letterFrequencyJson = 
+	}
+
 	$scope.audience.startRequest = startRequest;
 	$scope.blender.indexof = indexof;
 
-	$http.get('wordlist.json').success(function(data) {
-	    $scope.dictionary = data;
-	    alert($scope.dictionary.words.indexOf('hi'));
+	// $http.get('wordlist.json').success(function(data) {
+	//     $scope.dictionary = data;
+	//     $log.log($scope.dictionary.words.indexOf('hi'));
+	// });
+
+	$http.get('letter-frequency.json').success(function(data) {
+	    generateLetter(data.letterFrequency);
 	});
+
 	var requestInterval;
 	var generating = 0;
 
@@ -32,7 +41,53 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 		return 1 + Math.floor(Math.random() * 36);
 	};
 
+	function generateLetter(letterArray){
+		// var letterArray = data.letterFrequency,
+	    var	cumilativeFrequency = 0,
+    		randomSeed = (Math.random() * 100),
+    		i = 0;
+	    for (i = 0; i < letterArray.length; i++) {
+	    	cumilativeFrequency += letterArray[i].frequency;
+    		// letterArray[i]["cumilativeFrequency"] = round(cumilativeFrequency,2);
+    		if (cumilativeFrequency > randomSeed) {
+    			// alert(letterArray[i].letter);
+    			break;
+    		}
+	    }
+	    $log.log(JSON.stringify(letterArray));
+	    $log.log("randomSeed : " + randomSeed + ", letter : " + letterArray[i].letter);
+	}
 	
+	function round(value, decimals) {
+		return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+	}
+
+	function binaryIndexOf(searchElement,array) {
+	    'use strict';
+	 
+	    var minIndex = 0;
+	    var maxIndex = array.length - 1;
+	    var currentIndex;
+	    var currentElement;
+	 
+	    while (minIndex <= maxIndex) {
+	        currentIndex = (minIndex + maxIndex) / 2 | 0;
+	        currentElement = array[currentIndex];
+	 
+	        if (currentElement < searchElement) {
+	            minIndex = currentIndex + 1;
+	        }
+	        else if (currentElement > searchElement) {
+	            maxIndex = currentIndex - 1;
+	        }
+	        else {
+	            return currentIndex;
+	        }
+	    }
+	 
+	    return -1;
+	}
+
 	// non generic funtions
 	function startRequest(){
 		if(generating == 1){
@@ -76,6 +131,6 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 		startRequest();
 	};
 
-	startRequest();
+	// startRequest();
 
 }])
