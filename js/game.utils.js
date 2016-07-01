@@ -3,6 +3,7 @@ function game(letterFrequencyJson,wordlistJson){
 	this.wordlistJson = wordlistJson;
 	this.letterFrequency;
 	this.wordlist;
+	
 	// this.requestInterval;
 	var generating = 0;
 	var _this = this;
@@ -27,7 +28,7 @@ function game(letterFrequencyJson,wordlistJson){
 			_this.wordlist = data.words;
 		}, "json" );
 	};
-	
+
 	this.generateLetter = function() {
 	    var	cumilativeFrequency = 0,
     		randomSeed = (Math.random() * 100),
@@ -42,7 +43,7 @@ function game(letterFrequencyJson,wordlistJson){
     			return _this.letterFrequency[i].letter
     		}
 	    }
-	    
+
 	};
 
 	this.generateNumber = function(){
@@ -109,10 +110,10 @@ alphaJuice.startRequest();
 // var app = angular.module('alphaJuice', []);
 
 // app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$interval,$log,$http){
-	
+
 
 // 	function game () {
-// 		// this.letterFrequencyJson = 
+// 		// this.letterFrequencyJson =
 // 	}
 
 // 	$scope.audience.startRequest = startRequest;
@@ -155,23 +156,23 @@ alphaJuice.startRequest();
 // 	    $log.log(JSON.stringify(letterFrequency));
 // 	    $log.log("randomSeed : " + randomSeed + ", letter : " + letterFrequency[i].letter);
 // 	}
-	
+
 // 	function round(value, decimals) {
 // 		return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 // 	}
 
 // 	function binaryIndexOf(searchElement,array) {
 // 	    'use strict';
-	 
+
 // 	    var minIndex = 0;
 // 	    var maxIndex = array.length - 1;
 // 	    var currentIndex;
 // 	    var currentElement;
-	 
+
 // 	    while (minIndex <= maxIndex) {
 // 	        currentIndex = (minIndex + maxIndex) / 2 | 0;
 // 	        currentElement = array[currentIndex];
-	 
+
 // 	        if (currentElement < searchElement) {
 // 	            minIndex = currentIndex + 1;
 // 	        }
@@ -182,7 +183,7 @@ alphaJuice.startRequest();
 // 	            return currentIndex;
 // 	        }
 // 	    }
-	 
+
 // 	    return -1;
 // 	}
 
