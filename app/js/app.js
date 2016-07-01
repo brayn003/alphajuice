@@ -18,7 +18,7 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 
 	$http.get('wordlist.json').success(function(data) {
 	    $scope.dictionary = data;
-	    alert($scope.dictionary.indexOf('hi'));
+	    alert($scope.dictionary.words.indexOf('hi'));
 	});
 	var requestInterval;
 	var generating = 0;
@@ -49,7 +49,7 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 	function generateRequestArray(){
 		var key = generateNumber();
 		var value = generateAlphabet();
-		var limit = 10;
+		var limit = 18;
 		$log.log(key+" : "+value);
 		// $log.log($scope.audience.request.filter(function(x){ return true }).length);
 
