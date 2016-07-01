@@ -4,7 +4,7 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 	$scope.audience = {
 		'request' : []
 	};
-	
+
 	$scope.blender = {
 		'word' : ''
 	};
@@ -32,7 +32,7 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 		return 1 + Math.floor(Math.random() * 36);
 	};
 
-	
+
 	// non generic funtions
 	function startRequest(){
 		if(generating == 1){
@@ -62,19 +62,29 @@ app.controller('appCtrl',['$scope','$interval','$log','$http',function($scope,$i
 			}
 		}
 
-		
+
 		// else {
 		// 	// generateRequestArray();
 		// }
-		// alert(JSON.stringify(req)); 
+		// alert(JSON.stringify(req));
+	};
+
+	function isWordVaild(word){
+		if($scope.dictionary.words.indexOf(word) == -1)
+			return false
+		return true
 	};
 
 	function indexof(){
-		for (var i = 0; i < $scope.blender.word.length; i++) {
-			delete $scope.audience.request[$scope.audience.request.indexOf($scope.blender.word[i])];
-		}
-		startRequest();
-	};
+			if(isWordVaild($scope.blender.word)){
+				for (var i = 0; i < $scope.blender.word.length; i++) {
+					delete $scope.audience.request[$scope.audience.request.indexOf($scope.blender.word[i])];
+				}
+				startRequest();
+			}else{
+				alert('Not a vaild english word')
+			}
+		};
 
 	startRequest();
 
