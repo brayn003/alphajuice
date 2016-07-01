@@ -7,8 +7,8 @@ var gulp = require('gulp'),
 var lib = {
 		'vendor': {
 			'js' : [
-				'./bower_components/angular/angular.js',
-				'./bower_components/phaser/build/phaser.js'
+				'./bower_components/jquery/dist/jquery.min.js',
+				'./bower_components/phaser/build/phaser.min.js'
 			]
 		}
 	};
