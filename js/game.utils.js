@@ -68,7 +68,7 @@ function game(letterFrequencyJson,wordlistJson){
 		var key = _this.generateNumber();
 		var value = _this.generateLetter();
 		var limit = 18;
-		console.log(key+" : "+value);
+		// console.log(key+" : "+value);
 		// $log.log(audience.request.filter(function(x){ return true }).length);
 
 		if(_this.audience.request.filter(function(x){ return true }).length > limit-1) {
