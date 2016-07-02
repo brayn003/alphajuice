@@ -1,12 +1,12 @@
 var rightSpotlight, leftSpotlight, middleSpotlight;
-var bubblePoints, bubbles, bubbleText;
+var bubblePoints, bubbles, bubbleText, wordText;
 var game, game_scale;
-var style = { font: "48px Arial", fill: "#ff0044", align: "center"};
+var style = { font: "48px Quenda", fill: "#ff0044", align: "center"};
 
 var gameState = {
   preload: function(){
   	this.alphaJuice = new game('letter-frequency.json','wordlist.json');
-	this.alphaJuice.init();
+	  this.alphaJuice.init();
 
 
     this.load.image('background','../assets/images/background.png');
@@ -50,7 +50,7 @@ var gameState = {
     rightSpotlight.anchor.setTo(1,0);
     rightSpotlight.scale.setTo(game_scale, game_scale);
 
-    
+
 
     bubblePoints = {
     	'x' : [165,275,514,638,824,1091,1281,1501,1610,1710],
@@ -61,7 +61,7 @@ var gameState = {
     // for (var i = 0; i < bubblePoints.x.length; i++) {
     // 	var bubbles = game.add.sprite(bubblePoints.x[i],bubblePoints.y[i],'bubbles');
     // 	bubbles.scale.setTo(game_scale * 0.6, game_scale * 0.6);
-      
+
 
     // }
 
@@ -76,13 +76,15 @@ var gameState = {
 
     multiplerText.position.y = scoreText.height - multiplerText.height - 9
 
-    // this.alphaJuice.updateScore("Sunit");
-    // this.alphaJuice.updateScore("Camera");
-    // this.alphaJuice.updateScore('Computer');
-
-    //scoreText.setText(this.alphaJuice.multipler+" X "+this.alphaJuice.score,style);
+    //Bottom word text
+    var wordStyle = { font: "30px Quenda", fill: "#28B463", backgroundColor: "#FCF3CF" ,align: "center" };
+    wordText = game.add.text(0,0,"g",wordStyle);
+    wordText.position.y=game.height - wordText.height;
+    wordText.setText("");
 },
   update: function(){
+    var _this = this
+
   	setInterval(function(){
   		leftSpotlight.tint = Math.random() * 0xffffff;
   		rightSpotlight.tint = Math.random() * 0xffffff;
@@ -90,28 +92,31 @@ var gameState = {
   	},1200);
 
   	// for (var i = 0; i < points.x.length; i++) {
-    	
+
     // }
     for (var i = 0; i < this.alphaJuice.audience.request.length; i++) {
     	if (this.alphaJuice.audience.request[i] === undefined) {
     		// console.log(this.alphaJuice.audience.request[i]);
     	// 	break;
     	} else{
-    		bubbles = game.add.sprite(bubblePoints.x[i]*game_scale*0.8,game.height-bubblePoints.y[i]*game_scale*0.8,'bubbles');
+        bubbles = game.add.sprite(bubblePoints.x[i]*game_scale*0.8,game.height-bubblePoints.y[i]*game_scale*0.8,'bubbles');
 	    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
 	    	bubbles.anchor.setTo(0.5,0.5);
 	    	bubbles.inputEnabled=true;
-			bubbles.name = i;
-			bubbles.events.onInputDown.add(function(bubble){
-				_this.alphaJuice.bubbleClickListener(bubble.name);
-			});
+			  bubbles.name = i;
+			  bubbles.events.onInputDown.add(function(bubble){
+				      _this.alphaJuice.bubbleClickListener(bubble.name,wordText);
+              bubbles.inputEnabled = false;
+              var grayfilter = _this.game.add.filter('Gray');
+              bubbles.filters = [grayfilter];
+			  });
     		// console.log(this.alphaJuice.audience.request[i]);
     		bubbleText = game.add.text(bubblePoints.x[i]*game_scale*0.8,game.height-(bubblePoints.y[i]*game_scale*0.825), this.alphaJuice.audience.request[i], style);
 	    	bubbleText.anchor.setTo(0.5,0.5);
     		// console.log(this.alphaJuice.audience.request[i]);
     	}
 
-    	
+
     }
 
   }

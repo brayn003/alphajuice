@@ -49,7 +49,7 @@ function game(letterFrequencyJson,wordlistJson){
 	};
 
 	this.generateNumber = function(){
-		return 1 + Math.floor(Math.random() * 18);
+		return 1 + Math.floor(Math.random() * 9);
 	};
 
 	this.startRequest = function(){
@@ -65,9 +65,10 @@ function game(letterFrequencyJson,wordlistJson){
 	};
 
 	this.generateRequestArray = function(){
+
 		var key = _this.generateNumber();
 		var value = _this.generateLetter();
-		var limit = 18;
+		var limit = 10;
 		// console.log(key+" : "+value);
 		// $log.log(audience.request.filter(function(x){ return true }).length);
 
@@ -129,8 +130,8 @@ function game(letterFrequencyJson,wordlistJson){
 
 	//***************************Listener********************
 
-	this.bubbleClickListener = function(position){
-	  console.log("You have clicked "+position);
+	this.bubbleClickListener = function(position,wordText){
+	  wordText.setText(wordText.text+_this.audience.request[position]);
 	}
 
 
