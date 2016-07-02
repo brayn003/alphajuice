@@ -1,7 +1,7 @@
 var rightSpotlight, leftSpotlight, middleSpotlight;
 var bubblePoints, bubbles, bubbleText, wordText;
 var game, game_scale;
-var style = { font: "48px Quenda", fill: "#ff0044", align: "center"};
+var style = { font: "48px Quenda", fill: "#2C264E", align: "center"};
 var	crowdFirst, crowdSecond, crowdThirdLeft, crowdThirdRight;
 
 
@@ -26,6 +26,8 @@ var gameState = {
     this.load.image('crowd-third-left','../assets/images/crowd_third_left.png');
     this.load.image('crowd-third-right','../assets/images/crowd_third_right.png');
 
+    this.load.image('rod','../assets/images/rod.png');
+
     //Bubble
     this.load.image('bubbles','../assets/images/bubble.png');
   },
@@ -41,7 +43,22 @@ var gameState = {
 
     this.game.world.setBounds(0, 0, game.width, game.height);
 
-
+    var rod_points = [
+    	{
+    		"x": 0,
+    		"y": 0,
+    		"anchor_x": 0,
+    		"anchor_y": 0,
+    		"mirror" : 0
+    	},
+    	{
+    		"x": game.width,
+    		"y": 0,
+    		"anchor_x": 0,
+    		"anchor_y": 0,
+    		"mirror" : 1
+    	}
+    ];
 
     leftSpotlight = game.add.sprite(0,0,'left-spotlight');
     leftSpotlight.scale.setTo(game_scale, game_scale);
@@ -56,34 +73,35 @@ var gameState = {
 
     crowdThirdLeft = game.add.sprite(-1,200*game_scale,'crowd-third-left');
     crowdThirdLeft.scale.setTo(game_scale, game_scale);
-    this.add.tween(crowdThirdLeft).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
+    this.add.tween(crowdThirdLeft).to({ y: [250*game_scale,200*game_scale]},800, 'Cubic.easeOut', true, 0).loop(true);
 
 
     crowdThirdRight = game.add.sprite(game.width,200*game_scale,'crowd-third-right');
     crowdThirdRight.anchor.setTo(1,0);
     crowdThirdRight.scale.setTo(game_scale, game_scale);
-    this.add.tween(crowdThirdRight).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
+    this.add.tween(crowdThirdRight).to({ y: [250*game_scale,200*game_scale]},800, 'Cubic.easeOut', true, 0).loop(true);
 
 	crowdSecond = game.add.sprite(game.width/2,200*game_scale,'crowd-second');
     crowdSecond.anchor.setTo(0.5,0);
     crowdSecond.scale.setTo(game_scale, game_scale);
-    this.add.tween(crowdSecond).to({ y: [250*game_scale,200*game_scale]},1200, 'Cubic.easeOut', true, 0).loop(true);
-
-    // crowdFirstLeft = game.add.sprite(-1,400*game_scale,'crowd-first-left');
-    // crowdFirstLeft.scale.setTo(game_scale, game_scale);
-    // this.add.tween(crowdFirstLeft).to({ y: [350*game_scale,400*game_scale]},1100, 'Cubic.easeOut', true, 0).loop(true);
-
-    // crowdFirstRight = game.add.sprite(game.width/2,400*game_scale,'crowd-first-right');
-    // crowdFirstRight.anchor.setTo(0.5,0);
-    // crowdFirstRight.scale.setTo(game_scale, game_scale);
-    // this.add.tween(crowdFirstRight).to({ y: [350*game_scale,400*game_scale]},1150, 'Cubic.easeOut', true, 0).loop(true);
+    this.add.tween(crowdSecond).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
 
     crowdFirst = game.add.sprite(game.width/2,330*game_scale,'crowd-first');
     crowdFirst.anchor.setTo(0.5,0);
     crowdFirst.scale.setTo(game_scale, game_scale);
-    this.add.tween(crowdFirst).to({ y: [380*game_scale,330*game_scale]},1050, 'Cubic.easeOut', true, 0).loop(true);
+    this.add.tween(crowdFirst).to({ y: [380*game_scale,330*game_scale]},850, 'Cubic.easeOut', true, 0).loop(true);
 
+    for (var i = 0; i < rod_points.length; i++) {
+    	var rod = game.add.sprite(rod_points[i].x, rod_points[i].y,'rod');
+    	rod.anchor.setTo(rod_points[i].anchor_x,rod_points[i].anchor_y);
+    	if (rod_points[i].mirror == 1) {
+    		rod.scale.setTo(-game_scale, game_scale);
+    	}else {
+    		rod.scale.setTo(game_scale, game_scale);
+    	}
+    }
 
+    
 
     bubblePoints = {
     	'x' : [165,275,514,638,824,1091,1281,1501,1610,1710],
@@ -102,7 +120,7 @@ var gameState = {
   		rightSpotlight.tint = Math.random() * 0xffffff;
   		middleSpotlight.tint = Math.random() * 0xffffff;
       
-  	},1500);
+  	},400);
     //Score
     var multiplerstyle = { font: "20px Quenda", fill: "#FFD700", align: "center"};
     var multiplerText = game.add.text(0,0,this.alphaJuice.multipler+" X ",multiplerstyle);
