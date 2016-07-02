@@ -1,3 +1,29 @@
+(function(jQuery) {
+ 
+  jQuery.eventEmitter = {
+    _JQInit: function() {
+      this._JQ = jQuery(this);
+    },
+    emit: function(evt, data) {
+      !this._JQ && this._JQInit();
+      this._JQ.trigger(evt, data);
+    },
+    once: function(evt, handler) {
+      !this._JQ && this._JQInit();
+      this._JQ.one(evt, handler);
+    },
+    on: function(evt, handler) {
+      !this._JQ && this._JQInit();
+      this._JQ.bind(evt, handler);
+    },
+    off: function(evt, handler) {
+      !this._JQ && this._JQInit();
+      this._JQ.unbind(evt, handler);
+    }
+  };
+ 
+}(jQuery));
+
 function game(letterFrequencyJson,wordlistJson){
 	this.letterFrequencyJson = letterFrequencyJson;
 	this.wordlistJson = wordlistJson;
@@ -78,6 +104,8 @@ function game(letterFrequencyJson,wordlistJson){
 		}else{
 			if( _this.audience.request[key] === null || _this.audience.request[key] === undefined){
 				_this.audience.request[key]= value;
+				console.log(value);
+				_this.emit("request",{"key": key, "value": value});
 			}
 		}
 
@@ -136,6 +164,8 @@ function game(letterFrequencyJson,wordlistJson){
 
 
 }
+
+jQuery.extend(game.prototype, jQuery.eventEmitter);
 
 
 // var alphaJuice = new game('letter-frequency.json','wordlist.json');

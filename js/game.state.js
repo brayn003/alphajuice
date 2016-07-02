@@ -4,6 +4,7 @@ var game, game_scale;
 var style = { font: "48px Quenda", fill: "#ff0044", align: "center"};
 var	crowdFirst, crowdSecond, crowdThirdLeft, crowdThirdRight; 
 
+
 var gameState = {
   preload: function(){
   	this.alphaJuice = new game('letter-frequency.json','wordlist.json');
@@ -118,35 +119,33 @@ var gameState = {
     wordText = game.add.text(0,0,"g",wordStyle);
     wordText.position.y=game.height - wordText.height;
     wordText.setText("");
+
+
+    this.alphaJuice.on("request", function(event,data){
+	    		console.log(JSON.stringify(data));
+	    		bubbles = game.add.sprite(bubblePoints.x[data.key]*game_scale*0.8,game.height-bubblePoints.y[data.key]*game_scale*0.8,'bubbles');
+		    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
+		    	bubbles.anchor.setTo(0.5,0.5);
+		    	bubbles.inputEnabled=true;
+				  bubbles.name = data.key;
+				  bubbles.events.onInputDown.add(function(bubble){
+					      _this.alphaJuice.bubbleClickListener(bubble.name,wordText);
+	              bubbles.inputEnabled = false;
+	              //var grayfilter = _this.game.add.filter('Gray');
+	              //bubbles.filters = [grayfilter];
+				  });
+	    		// console.log(this.alphaJuice.audience.request[i]);
+	    		bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
+		    	bubbleText.anchor.setTo(0.5,0.5);
+	    	
+    });
+    
 },
   update: function(){
     var _this = this
-  	
-
-    for (var i = 0; i < this.alphaJuice.audience.request.length; i++) {
-    	if (this.alphaJuice.audience.request[i] !== undefined) {
-    		// console.log(this.alphaJuice.audience.request[i]);
-    	// 	break;
-    	// } else{
-    		bubbles = game.add.sprite(bubblePoints.x[i]*game_scale*0.8,game.height-bubblePoints.y[i]*game_scale*0.8,'bubbles');
-	    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
-	    	bubbles.anchor.setTo(0.5,0.5);
-	    	bubbles.inputEnabled=true;
-			  bubbles.name = i;
-			  bubbles.events.onInputDown.add(function(bubble){
-				      _this.alphaJuice.bubbleClickListener(bubble.name,wordText);
-              bubbles.inputEnabled = false;
-              var grayfilter = _this.game.add.filter('Gray');
-              bubbles.filters = [grayfilter];
-			  });
-    		// console.log(this.alphaJuice.audience.request[i]);
-    		bubbleText = game.add.text(bubblePoints.x[i]*game_scale*0.8,game.height-(bubblePoints.y[i]*game_scale*0.825), this.alphaJuice.audience.request[i], style);
-	    	bubbleText.anchor.setTo(0.5,0.5);
-    		// console.log(this.alphaJuice.audience.request[i]);
-    	}
 
 
-    }
+    
 
   }
 
