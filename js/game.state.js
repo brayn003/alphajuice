@@ -134,21 +134,21 @@ var gameState = {
 
 	//bubble gen
     this.alphaJuice.on("request", function(event,data){
-	    		console.log(JSON.stringify(data));
-	    		bubbles = game.add.sprite(bubblePoints.x[data.key]*game_scale*0.8,game.height-bubblePoints.y[data.key]*game_scale*0.8,'bubbles');
-		    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
-		    	bubbles.anchor.setTo(0.5,0.5);
-		    	bubbles.inputEnabled=true;
-				  bubbles.name = data.key;
-				  bubbles.events.onInputDown.add(function(bubble){
-					      _this.alphaJuice.bubbleClickListener(bubble.name,wordText);
-	              bubbles.inputEnabled = false;
-	              //var grayfilter = _this.game.add.filter('Gray');
-	              //bubbles.filters = [grayfilter];
-				  });
-	    		// console.log(this.alphaJuice.audience.request[i]);
-	    		bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
-		    	bubbleText.anchor.setTo(0.5,0.5);
+		console.log(JSON.stringify(data));
+		bubbles = game.add.sprite(bubblePoints.x[data.key]*game_scale*0.8,game.height-bubblePoints.y[data.key]*game_scale*0.8,'bubbles');
+    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
+    	bubbles.anchor.setTo(0.5,0.5);
+    	bubbles.inputEnabled=true;
+		  bubbles.name = data.key;
+		  bubbles.events.onInputDown.add(function(bubble){
+			      _this.alphaJuice.bubbleClickListener(bubble.name,wordText);
+          bubbles.inputEnabled = false;
+          //var grayfilter = _this.game.add.filter('Gray');
+          //bubbles.filters = [grayfilter];
+		  });
+		// console.log(this.alphaJuice.audience.request[i]);
+		bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
+    	bubbleText.anchor.setTo(0.5,0.5);
 	    	
     });
     
