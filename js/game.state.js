@@ -56,18 +56,14 @@ var gameState = {
     	'x' : [165,275,514,638,824,1091,1281,1501,1610,1710],
     	'y' : [545,701,572,761,694,644,588,660,400,547]
     }
-    var style = { font: "32px Arial", fill: "#ff0044", align: "center", backgroundColor: "#ffff00" };
+    // var style = { font: "32px Arial", fill: "#ff0044", align: "center", backgroundColor: "#ffff00" };
 
-    for (var i = 0; i < bubblePoints.x.length; i++) {
-    	var bubbles = game.add.sprite(bubblePoints.x[i],bubblePoints.y[i],'bubbles');
-    	bubbles.scale.setTo(game_scale * 0.6, game_scale * 0.6);
-      bubbles.inputEnabled=true;
-      bubbles.name = i;
-      bubbles.events.onInputDown.add(function(bubble){
-          _this.alphaJuice.bubbleClickListener(bubble.name);
-      });
+    // for (var i = 0; i < bubblePoints.x.length; i++) {
+    // 	var bubbles = game.add.sprite(bubblePoints.x[i],bubblePoints.y[i],'bubbles');
+    // 	bubbles.scale.setTo(game_scale * 0.6, game_scale * 0.6);
+      
 
-    }
+    // }
 
     //Score
     var multiplerstyle = { font: "20px Quenda", fill: "#FFD700", align: "center"};
@@ -104,6 +100,11 @@ var gameState = {
     		bubbles = game.add.sprite(bubblePoints.x[i]*game_scale*0.8,game.height-bubblePoints.y[i]*game_scale*0.8,'bubbles');
 	    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
 	    	bubbles.anchor.setTo(0.5,0.5);
+	    	bubbles.inputEnabled=true;
+			bubbles.name = i;
+			bubbles.events.onInputDown.add(function(bubble){
+				_this.alphaJuice.bubbleClickListener(bubble.name);
+			});
     		// console.log(this.alphaJuice.audience.request[i]);
     		bubbleText = game.add.text(bubblePoints.x[i]*game_scale*0.8,game.height-(bubblePoints.y[i]*game_scale*0.825), this.alphaJuice.audience.request[i], style);
 	    	bubbleText.anchor.setTo(0.5,0.5);
