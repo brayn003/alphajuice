@@ -120,7 +120,8 @@ var gameState = {
     wordText.setText("");
 },
   update: function(){
-
+    var _this = this
+  	
 
     for (var i = 0; i < this.alphaJuice.audience.request.length; i++) {
     	if (this.alphaJuice.audience.request[i] !== undefined) {
