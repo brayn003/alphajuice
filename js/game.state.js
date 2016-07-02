@@ -2,6 +2,7 @@ var rightSpotlight, leftSpotlight, middleSpotlight;
 var bubblePoints, bubbles, bubbleText, wordText;
 var game, game_scale;
 var style = { font: "48px Quenda", fill: "#ff0044", align: "center"};
+var	crowdFirst, crowdSecond, crowdThirdLeft, crowdThirdRight; 
 
 var gameState = {
   preload: function(){
@@ -17,12 +18,12 @@ var gameState = {
     this.load.image('right-spotlight','../assets/images/right-spotlight.png');
 
     //Crowd
-    this.load.image('crowd-left','../assets/images/crowd_left.png');
-    this.load.image('crowd-right','../assets/images/crowd_right.png');
-    this.load.image('crowd-middle','../assets/images/crowd_middle.png');
-    this.load.image('crowd-secondline','../assets/images/crowd_secondline.png');
-    this.load.image('crowd-topleft','../assets/images/crowd_topleft.png');
-    this.load.image('crowd-topright','../assets/images/crowd_topright.png');
+    this.load.image('crowd-first','../assets/images/crowd_first.png');
+    // this.load.image('crowd-first-right','../assets/images/crowd_first_right.png');
+    // this.load.image('crowd-first-middle','../assets/images/crowd_first_middle.png');
+    this.load.image('crowd-second','../assets/images/crowd_second.png');
+    this.load.image('crowd-third-left','../assets/images/crowd_third_left.png');
+    this.load.image('crowd-third-right','../assets/images/crowd_third_right.png');
 
     //Bubble
     this.load.image('bubbles','../assets/images/bubble.png');
@@ -39,6 +40,8 @@ var gameState = {
 
     this.game.world.setBounds(0, 0, game.width, game.height);
 
+	
+
     leftSpotlight = game.add.sprite(0,0,'left-spotlight');
     leftSpotlight.scale.setTo(game_scale, game_scale);
 
@@ -50,6 +53,35 @@ var gameState = {
     rightSpotlight.anchor.setTo(1,0);
     rightSpotlight.scale.setTo(game_scale, game_scale);
 
+    crowdThirdLeft = game.add.sprite(-1,200*game_scale,'crowd-third-left');
+    crowdThirdLeft.scale.setTo(game_scale, game_scale);
+    this.add.tween(crowdThirdLeft).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
+
+
+    crowdThirdRight = game.add.sprite(game.width,200*game_scale,'crowd-third-right');
+    crowdThirdRight.anchor.setTo(1,0);
+    crowdThirdRight.scale.setTo(game_scale, game_scale);	    
+    this.add.tween(crowdThirdRight).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
+
+	crowdSecond = game.add.sprite(game.width/2,200*game_scale,'crowd-second');
+    crowdSecond.anchor.setTo(0.5,0);
+    crowdSecond.scale.setTo(game_scale, game_scale);    
+    this.add.tween(crowdSecond).to({ y: [250*game_scale,200*game_scale]},1200, 'Cubic.easeOut', true, 0).loop(true);
+
+    // crowdFirstLeft = game.add.sprite(-1,400*game_scale,'crowd-first-left');
+    // crowdFirstLeft.scale.setTo(game_scale, game_scale);
+    // this.add.tween(crowdFirstLeft).to({ y: [350*game_scale,400*game_scale]},1100, 'Cubic.easeOut', true, 0).loop(true);
+
+    // crowdFirstRight = game.add.sprite(game.width/2,400*game_scale,'crowd-first-right');
+    // crowdFirstRight.anchor.setTo(0.5,0);
+    // crowdFirstRight.scale.setTo(game_scale, game_scale);
+    // this.add.tween(crowdFirstRight).to({ y: [350*game_scale,400*game_scale]},1150, 'Cubic.easeOut', true, 0).loop(true);
+
+    crowdFirst = game.add.sprite(game.width/2,330*game_scale,'crowd-first');
+    crowdFirst.anchor.setTo(0.5,0);
+    crowdFirst.scale.setTo(game_scale, game_scale);
+    this.add.tween(crowdFirst).to({ y: [380*game_scale,330*game_scale]},1050, 'Cubic.easeOut', true, 0).loop(true);
+	
 
 
     bubblePoints = {
@@ -64,7 +96,12 @@ var gameState = {
 
 
     // }
-
+    setInterval(function(){
+  		leftSpotlight.tint = Math.random() * 0xffffff;
+  		rightSpotlight.tint = Math.random() * 0xffffff;
+  		middleSpotlight.tint = Math.random() * 0xffffff;
+  		console.log("hello");
+  	},1500);
     //Score
     var multiplerstyle = { font: "20px Quenda", fill: "#FFD700", align: "center"};
     var multiplerText = game.add.text(0,0,this.alphaJuice.multipler+" X ",multiplerstyle);
@@ -83,23 +120,14 @@ var gameState = {
     wordText.setText("");
 },
   update: function(){
-    var _this = this
 
-  	setInterval(function(){
-  		leftSpotlight.tint = Math.random() * 0xffffff;
-  		rightSpotlight.tint = Math.random() * 0xffffff;
-  		middleSpotlight.tint = Math.random() * 0xffffff;
-  	},1200);
 
-  	// for (var i = 0; i < points.x.length; i++) {
-
-    // }
     for (var i = 0; i < this.alphaJuice.audience.request.length; i++) {
-    	if (this.alphaJuice.audience.request[i] === undefined) {
+    	if (this.alphaJuice.audience.request[i] !== undefined) {
     		// console.log(this.alphaJuice.audience.request[i]);
     	// 	break;
-    	} else{
-        bubbles = game.add.sprite(bubblePoints.x[i]*game_scale*0.8,game.height-bubblePoints.y[i]*game_scale*0.8,'bubbles');
+    	// } else{
+    		bubbles = game.add.sprite(bubblePoints.x[i]*game_scale*0.8,game.height-bubblePoints.y[i]*game_scale*0.8,'bubbles');
 	    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
 	    	bubbles.anchor.setTo(0.5,0.5);
 	    	bubbles.inputEnabled=true;
