@@ -2,7 +2,7 @@ var rightSpotlight, leftSpotlight, middleSpotlight;
 var bubblePoints, bubbles, bubbleText, wordText;
 var game, game_scale;
 var style = { font: "48px Quenda", fill: "#ff0044", align: "center"};
-var	crowdFirst, crowdSecond, crowdThirdLeft, crowdThirdRight; 
+var	crowdFirst, crowdSecond, crowdThirdLeft, crowdThirdRight;
 
 var gameState = {
   preload: function(){
@@ -40,7 +40,7 @@ var gameState = {
 
     this.game.world.setBounds(0, 0, game.width, game.height);
 
-	
+
 
     leftSpotlight = game.add.sprite(0,0,'left-spotlight');
     leftSpotlight.scale.setTo(game_scale, game_scale);
@@ -60,12 +60,12 @@ var gameState = {
 
     crowdThirdRight = game.add.sprite(game.width,200*game_scale,'crowd-third-right');
     crowdThirdRight.anchor.setTo(1,0);
-    crowdThirdRight.scale.setTo(game_scale, game_scale);	    
+    crowdThirdRight.scale.setTo(game_scale, game_scale);
     this.add.tween(crowdThirdRight).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
 
 	crowdSecond = game.add.sprite(game.width/2,200*game_scale,'crowd-second');
     crowdSecond.anchor.setTo(0.5,0);
-    crowdSecond.scale.setTo(game_scale, game_scale);    
+    crowdSecond.scale.setTo(game_scale, game_scale);
     this.add.tween(crowdSecond).to({ y: [250*game_scale,200*game_scale]},1200, 'Cubic.easeOut', true, 0).loop(true);
 
     // crowdFirstLeft = game.add.sprite(-1,400*game_scale,'crowd-first-left');
@@ -81,7 +81,7 @@ var gameState = {
     crowdFirst.anchor.setTo(0.5,0);
     crowdFirst.scale.setTo(game_scale, game_scale);
     this.add.tween(crowdFirst).to({ y: [380*game_scale,330*game_scale]},1050, 'Cubic.easeOut', true, 0).loop(true);
-	
+
 
 
     bubblePoints = {
@@ -100,7 +100,7 @@ var gameState = {
   		leftSpotlight.tint = Math.random() * 0xffffff;
   		rightSpotlight.tint = Math.random() * 0xffffff;
   		middleSpotlight.tint = Math.random() * 0xffffff;
-  		console.log("hello");
+      
   	},1500);
     //Score
     var multiplerstyle = { font: "20px Quenda", fill: "#FFD700", align: "center"};
@@ -118,10 +118,22 @@ var gameState = {
     wordText = game.add.text(0,0,"g",wordStyle);
     wordText.position.y=game.height - wordText.height;
     wordText.setText("");
+
+    //Background Music
+    var bgAudio = new Audio('../assets/sounds/bg.ogg');
+    bgAudio.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+    }, false);
+    bgAudio.play();
+
+    window.addEventListener("beforeunload", function(e){
+      _this.bgAudio.stop();
+    });
 },
   update: function(){
     var _this = this
-  	
+
 
     for (var i = 0; i < this.alphaJuice.audience.request.length; i++) {
     	if (this.alphaJuice.audience.request[i] !== undefined) {
