@@ -34,6 +34,7 @@ var gameState = {
 
     //Mixer
     this.load.image('mixer','../assets/images/mixer.png');
+    this.load.spritesheet('mixer_animation', '../assets/images/mixer_animation.png', 271, 423);
 
     //Table
     this.load.image('table','../assets/images/table.png');
@@ -137,7 +138,7 @@ var gameState = {
     scoreText = game.add.text(multiplerText.width,0,this.alphaJuice.score,scorestyle);
     scoreText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 
-    multiplerText.position.y = scoreText.height - multiplerText.height - 9
+    multiplerText.position.y = scoreText.height - multiplerText.height - 9;
 
     //Bottom word text
     var wordStyle = { font: "30px Quenda", fill: "#28B463", backgroundColor: "#FCF3CF" ,align: "center" };
@@ -151,17 +152,39 @@ var gameState = {
     table.position.x = (game.width/2)- (table.width/2);
     table.position.y = game.height - table.height;
 
-    //mixer
-    mixer = game.add.sprite(0,0,'mixer');
-    mixer.scale.setTo(game_scale, game_scale);
-    mixer.position.x = (game.width/2) - (table.width/4);
-    mixer.position.y = game.height - 200;
-    mixer.inputEnabled = true;
-    mixer.events.onInputDown.add(function(mixer){
-      _this.alphaJuice.mixerClickListener(scoreText,multiplerText);
-    });
+    var mixer, mixerAnimate, mixerShake;
 
-	 //Background Music
+    function animateMixer(){
+    	mixer.destroy();
+	    mixerAnimate = game.add.sprite(0,0,'mixer_animation');
+		mixerShake = mixerAnimate.animations.add('mixerShake');
+		mixerAnimate.scale.setTo(game_scale, game_scale);
+		mixerAnimate.anchor.setTo(0.5,1);
+		mixerAnimate.position.x = 2*game.width/5;
+		mixerAnimate.position.y = game.height;
+      	mixerAnimate.animations.play('mixerShake', 36, false);
+      	mixerShake.onComplete.add(function(){
+      		mixerAnimate.destroy();
+      		staticMixer();
+      	}, this);
+    }
+    
+	function staticMixer(){
+		mixer = game.add.sprite(0,0,'mixer');
+	    mixer.scale.setTo(game_scale, game_scale);
+	    mixer.position.x = 2*game.width/5 - 1;
+	    mixer.position.y = game.height-63;
+		mixer.inputEnabled = true;
+		mixer.anchor.setTo(0.5,1);
+	    mixer.events.onInputDown.add(function(mixer){
+	      _this.alphaJuice.mixerClickListener(scoreText,multiplerText);
+	      animateMixer();
+	    });
+	}
+    //mixer
+    staticMixer();
+
+	//Background Music
     var bgAudio = new Audio('../assets/sounds/bg.ogg');
     bgAudio.addEventListener('ended', function() {
       this.currentTime = 0;
@@ -177,22 +200,21 @@ var gameState = {
     this.alphaJuice.on("request", function(event,data){
 
 		var bubbles = game.add.sprite(bubblePoints.x[data.key]*game_scale*0.8,game.height-bubblePoints.y[data.key]*game_scale*0.8,'bubbles');
-    bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
-    bubbles.anchor.setTo(0.5,0.5);
-    bubbles.inputEnabled=true;
+	    bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
+	    bubbles.anchor.setTo(0.5,0.5);
+	    bubbles.inputEnabled=true;
 		bubbles.name = data.key;
-		// console.log(this.alphaJuice.audience.request[i]);
+			// console.log(this.alphaJuice.audience.request[i]);
 		var bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
-    bubbleText.anchor.setTo(0.5,0.5);
-    bubbles.events.onInputDown.add(function(bubble){
-      _this.alphaJuice.bubbleClickListener(bubble,bubbleText,_this.game);
+	    bubbleText.anchor.setTo(0.5,0.5);
+	    bubbles.events.onInputDown.add(function(bubble){
+		  	_this.alphaJuice.bubbleClickListener(bubble,bubbleText,_this.game);
 		});
 
     });
 
 },
   update: function(){
-    var _this = this
 
 
 
