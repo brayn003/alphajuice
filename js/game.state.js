@@ -1,5 +1,6 @@
 var rightSpotlight, leftSpotlight, middleSpotlight;
-var bubblePoints, bubbles, bubbleText, wordText;
+var bubblePoints, bubbles, bubbleText,mixer,table;
+var scoreText, multiplerText;
 var game, game_scale;
 var style = { font: "48px Quenda", fill: "#ff0044", align: "center"};
 var	crowdFirst, crowdSecond, crowdThirdLeft, crowdThirdRight;
@@ -28,6 +29,12 @@ var gameState = {
 
     //Bubble
     this.load.image('bubbles','../assets/images/bubble.png');
+
+    //Mixer
+    this.load.image('mixer','../assets/images/mixer.png');
+
+    //Table
+    this.load.image('table','../assets/images/table.png');
   },
   create: function(){
 	this.alphaJuice.startRequest();
@@ -64,7 +71,7 @@ var gameState = {
     crowdThirdRight.scale.setTo(game_scale, game_scale);
     this.add.tween(crowdThirdRight).to({ y: [250*game_scale,200*game_scale]},1000, 'Cubic.easeOut', true, 0).loop(true);
 
-	crowdSecond = game.add.sprite(game.width/2,200*game_scale,'crowd-second');
+	  crowdSecond = game.add.sprite(game.width/2,200*game_scale,'crowd-second');
     crowdSecond.anchor.setTo(0.5,0);
     crowdSecond.scale.setTo(game_scale, game_scale);
     this.add.tween(crowdSecond).to({ y: [250*game_scale,200*game_scale]},1200, 'Cubic.easeOut', true, 0).loop(true);
@@ -101,15 +108,15 @@ var gameState = {
   		leftSpotlight.tint = Math.random() * 0xffffff;
   		rightSpotlight.tint = Math.random() * 0xffffff;
   		middleSpotlight.tint = Math.random() * 0xffffff;
-      
+
   	},1500);
     //Score
     var multiplerstyle = { font: "20px Quenda", fill: "#FFD700", align: "center"};
-    var multiplerText = game.add.text(0,0,this.alphaJuice.multipler+" X ",multiplerstyle);
+    multiplerText = game.add.text(0,0,this.alphaJuice.multipler+" X ",multiplerstyle);
     multiplerText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 
     var scorestyle =  { font: "50px Quenda", fill: "#FFD700", align: "center" };
-    var scoreText = game.add.text(multiplerText.width,0,this.alphaJuice.score,scorestyle);
+    scoreText = game.add.text(multiplerText.width,0,this.alphaJuice.score,scorestyle);
     scoreText.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 
     multiplerText.position.y = scoreText.height - multiplerText.height - 9
@@ -119,6 +126,22 @@ var gameState = {
     wordText = game.add.text(0,0,"g",wordStyle);
     wordText.position.y=game.height - wordText.height;
     wordText.setText("");
+
+    //table
+    table = game.add.sprite(0,0,'table');
+    table.scale.setTo(game_scale,game_scale);
+    table.position.x = (game.width/2)- (table.width/2);
+    table.position.y = game.height - table.height;
+
+    //mixer
+    mixer = game.add.sprite(0,0,'mixer');
+    mixer.scale.setTo(game_scale, game_scale);
+    mixer.position.x = (game.width/2) - (table.width/4);
+    mixer.position.y = game.height - 200;
+    mixer.inputEnabled = true;
+    mixer.events.onInputDown.add(function(mixer){
+      _this.alphaJuice.mixerClickListener(scoreText,multiplerText);
+    });
 
 	 //Background Music
     var bgAudio = new Audio('../assets/sounds/bg.ogg');
@@ -134,30 +157,27 @@ var gameState = {
 
 	//bubble gen
     this.alphaJuice.on("request", function(event,data){
-		console.log(JSON.stringify(data));
-		bubbles = game.add.sprite(bubblePoints.x[data.key]*game_scale*0.8,game.height-bubblePoints.y[data.key]*game_scale*0.8,'bubbles');
-    	bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
-    	bubbles.anchor.setTo(0.5,0.5);
-    	bubbles.inputEnabled=true;
-		  bubbles.name = data.key;
-		  bubbles.events.onInputDown.add(function(bubble){
-			      _this.alphaJuice.bubbleClickListener(bubble.name,wordText);
-          bubbles.inputEnabled = false;
-          //var grayfilter = _this.game.add.filter('Gray');
-          //bubbles.filters = [grayfilter];
-		  });
+
+		var bubbles = game.add.sprite(bubblePoints.x[data.key]*game_scale*0.8,game.height-bubblePoints.y[data.key]*game_scale*0.8,'bubbles');
+    bubbles.scale.setTo(game_scale * 0.7, game_scale * 0.7);
+    bubbles.anchor.setTo(0.5,0.5);
+    bubbles.inputEnabled=true;
+		bubbles.name = data.key;
 		// console.log(this.alphaJuice.audience.request[i]);
-		bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
-    	bubbleText.anchor.setTo(0.5,0.5);
-	    	
+		var bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
+    bubbleText.anchor.setTo(0.5,0.5);
+    bubbles.events.onInputDown.add(function(bubble){
+      _this.alphaJuice.bubbleClickListener(bubble,bubbleText,_this.game);
+		});
+
     });
-    
+
 },
   update: function(){
     var _this = this
 
 
-    
+
 
   }
 

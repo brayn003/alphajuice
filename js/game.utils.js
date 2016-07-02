@@ -1,5 +1,5 @@
 (function(jQuery) {
- 
+
   jQuery.eventEmitter = {
     _JQInit: function() {
       this._JQ = jQuery(this);
@@ -21,7 +21,7 @@
       this._JQ.unbind(evt, handler);
     }
   };
- 
+
 }(jQuery));
 
 function game(letterFrequencyJson,wordlistJson){
@@ -31,6 +31,8 @@ function game(letterFrequencyJson,wordlistJson){
 	this.wordlist;
 	this.score = 0;
 	this.multipler = 0;
+	this.currentWordX = 50;
+	this.userText = {};
 
 	// this.requestInterval;
 	var generating = 0;
@@ -43,11 +45,7 @@ function game(letterFrequencyJson,wordlistJson){
 	this.blender = {
 		'word' : ''
 	};
-
-	this.dictionary = {
-
-	};
-
+	
 	this.init = function() {
 		$.get( letterFrequencyJson, function(data) {
 			_this.letterFrequency = data.letterFrequency;
@@ -104,7 +102,7 @@ function game(letterFrequencyJson,wordlistJson){
 		}else{
 			if( _this.audience.request[key] === null || _this.audience.request[key] === undefined){
 				_this.audience.request[key]= value;
-				console.log(value);
+
 				_this.emit("request",{"key": key, "value": value});
 			}
 		}
@@ -128,10 +126,19 @@ function game(letterFrequencyJson,wordlistJson){
 	};
 
 	this.isWordVaild = function(word){
-		if(_this.dictionary.words.indexOf(word) == -1)
+		if(_this.wordlist.indexOf(word) == -1)
 			return false
 		return true
 	};
+
+
+	this.getUserInput = function(){
+		var word = "";
+		for(var key in _this.userText){
+			word = word.concat(_this.userText[key]);
+		}
+		return word;
+	}
 
 //*******************SCORE****************************
 
@@ -158,8 +165,72 @@ function game(letterFrequencyJson,wordlistJson){
 
 	//***************************Listener********************
 
-	this.bubbleClickListener = function(position,wordText){
-	  wordText.setText(wordText.text+_this.audience.request[position]);
+	this.mixerClickListener = function(scoreText, multiplerText){
+		if(_this.getUserInput() != ""){
+			var word = _this.getUserInput();
+			if(_this.isWordVaild(word)){
+				_this.updateScore(word);
+				scoreText.setText(""+_this.score);
+				multiplerText.setText(_this.multipler+ " X ");
+				_this.userText = {};
+			}else{
+				alert("Not a valid word");
+			}
+		}
+	}
+
+	this.bubbleClickListener = function(bubble,bubbleText,game){
+
+
+		if((typeof(bubble.is_Clicked) == 'undefined') || (bubble.is_Clicked == false)){
+
+			bubble.is_Clicked = true;
+			bubble.lastX = bubble.position.x;
+			bubble.lastY = bubble.position.y;
+			bubbleText.lastX = bubbleText.position.x;
+			bubbleText.lastY = bubbleText.position.y;
+			bubble.arrayItemIndex = bubble.position.x;
+
+			_this.userText[bubble.arrayItemIndex] = bubbleText.text;
+
+			var tween = game.add.tween(bubble)
+			tween.onStart.add(function(){
+				game.add.tween(bubble.scale).to({x:0.3,y:0.3},500,"Cubic.easeOut",true);
+			});
+			tween.to( { x: this.currentWordX, y:game.height - bubble.height }, 500,"Cubic.easeOut", true);
+
+			var tween1 = game.add.tween(bubbleText)
+			tween.onStart.add(function(){
+				game.add.tween(bubbleText.scale).to({x:0.5,y:0.5},500,"Cubic.easeOut",true);
+			});
+			tween1.to( { x: this.currentWordX, y:game.height - bubble.height *1.11  }, 500,"Cubic.easeOut", true);
+
+			this.currentWordX += (bubble.width*0.3+15);
+
+		}else{
+
+			bubble.is_Clicked = false;
+
+			var tween = game.add.tween(bubble)
+			tween.onStart.add(function(){
+				game.add.tween(bubble.scale).to({x:0.6,y:0.6},500,"Cubic.easeOut",true);
+			});
+			tween.to( { x: bubble.lastX, y: bubble.lastY }, 500,"Cubic.easeOut", true);
+
+			var tween1 = game.add.tween(bubbleText)
+			tween.onStart.add(function(){
+				game.add.tween(bubbleText.scale).to({x:1,y:1},500,"Cubic.easeOut",true);
+			});
+			tween1.to( { x: bubbleText.lastX, y:bubbleText.lastY  }, 500,"Cubic.easeOut", true);
+
+
+			delete _this.userText[bubble.arrayItemIndex];
+			if(jQuery.isEmptyObject(_this.userText)){
+				_this.currentWordX = 50;
+			}
+
+		}
+
 	}
 
 
