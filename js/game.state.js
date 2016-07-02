@@ -166,9 +166,14 @@ var gameState = {
 		// console.log(this.alphaJuice.audience.request[i]);
 		var bubbleText = game.add.text(bubblePoints.x[data.key]*game_scale*0.8,game.height-(bubblePoints.y[data.key]*game_scale*0.825), data.value, style);
     bubbleText.anchor.setTo(0.5,0.5);
-    bubbles.events.onInputDown.add(function(bubble){
-      _this.alphaJuice.bubbleClickListener(bubble,bubbleText,_this.game);
-		});
+    bubbles.events.onInputDown.add(
+      function(bubbles, bubbleText){
+        return function(){
+          console.log(bubbles);
+          _this.alphaJuice.bubbleClickListener(bubbles,bubbleText,_this.game);
+        }
+		}(bubbles, bubbleText)
+  );
 
     });
 

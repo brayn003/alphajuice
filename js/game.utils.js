@@ -33,6 +33,8 @@ function game(letterFrequencyJson,wordlistJson){
 	this.multipler = 0;
 	this.currentWordX = 50;
 	this.userText = {};
+	this.usedBubbleList = [];
+	this.usedWordSpritList = [];
 
 	// this.requestInterval;
 	var generating = 0;
@@ -45,7 +47,7 @@ function game(letterFrequencyJson,wordlistJson){
 	this.blender = {
 		'word' : ''
 	};
-	
+
 	this.init = function() {
 		$.get( letterFrequencyJson, function(data) {
 			_this.letterFrequency = data.letterFrequency;
@@ -64,9 +66,7 @@ function game(letterFrequencyJson,wordlistJson){
     		// letterFrequency[i]["cumilativeFrequency"] = round(cumilativeFrequency,2);
     		if (cumilativeFrequency > randomSeed) {
     			// alert(letterFrequency[i].letter);
-    			// console.log(JSON.stringify(_this.letterFrequency));
-	    		// console.log("randomSeed : " + randomSeed + ", letter : " + _this.letterFrequency[i].letter);
-    			return _this.letterFrequency[i].letter
+    		return _this.letterFrequency[i].letter
     		}
 	    }
 
@@ -100,7 +100,9 @@ function game(letterFrequencyJson,wordlistJson){
 			console.log('Stopping');
 			clearInterval(_this.requestInterval);
 		}else{
+			console.log(_this.audience.request[key]);
 			if( _this.audience.request[key] === null || _this.audience.request[key] === undefined){
+				console.log("In True");
 				_this.audience.request[key]= value;
 
 				_this.emit("request",{"key": key, "value": value});
@@ -169,10 +171,22 @@ function game(letterFrequencyJson,wordlistJson){
 		if(_this.getUserInput() != ""){
 			var word = _this.getUserInput();
 			if(_this.isWordVaild(word)){
+				for(var i=0;i<word.length;i++){
+					_this.audience.request.splice(_this.audience.request.indexOf(word.charAt(i)),1);
+				}
 				_this.updateScore(word);
 				scoreText.setText(""+_this.score);
 				multiplerText.setText(_this.multipler+ " X ");
+
+				for (var i = 0; i < _this.usedBubbleList.length; i++) {
+					_this.usedBubbleList[i].destroy();
+				}
+				for(var i=0;i<_this.usedWordSpritList.length; i++){
+					_this.usedWordSpritList[i].destroy();
+				}
 				_this.userText = {};
+				_this.startRequest();
+
 			}else{
 				alert("Not a valid word");
 			}
@@ -206,6 +220,8 @@ function game(letterFrequencyJson,wordlistJson){
 			tween1.to( { x: this.currentWordX, y:game.height - bubble.height *1.11  }, 500,"Cubic.easeOut", true);
 
 			this.currentWordX += (bubble.width*0.3+15);
+			this.usedBubbleList.push(bubble);
+			this.usedWordSpritList.push(bubbleText);
 
 		}else{
 
@@ -227,6 +243,11 @@ function game(letterFrequencyJson,wordlistJson){
 			delete _this.userText[bubble.arrayItemIndex];
 			if(jQuery.isEmptyObject(_this.userText)){
 				_this.currentWordX = 50;
+			}
+
+			if(_this.usedBubbleList.indexOf(bubble) != -1){
+				_this.usedBubbleList.splice(_this.usedBubbleList.indexOf(bubble),1);
+				_this.usedWordSpritList.splice(_this.usedWordSpritList.indexOf(bubbleText),1);
 			}
 
 		}
