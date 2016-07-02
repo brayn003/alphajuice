@@ -3,7 +3,9 @@ function game(letterFrequencyJson,wordlistJson){
 	this.wordlistJson = wordlistJson;
 	this.letterFrequency;
 	this.wordlist;
-	
+	this.score = 0;
+	this.multipler = 0;
+
 	// this.requestInterval;
 	var generating = 0;
 	var _this = this;
@@ -101,7 +103,39 @@ function game(letterFrequencyJson,wordlistJson){
 			return false
 		return true
 	};
+
+//*******************SCORE****************************
+
+	this.getFrequencyOfLetter = function(letter){
+		var alpha = letter.toLowerCase();
+		for(var i=0;i<_this.letterFrequency.length;i++){
+			if(_this.letterFrequency[i].letter == alpha ){
+				return _this.letterFrequency[i].frequency;
+			}
+		}
+		return 0;
+	}
+
+	this.updateScore = function(word){
+		_this.multipler +=1;
+		//Make Score rarity of alphabate
+		var tmp = 0;
+		for(var i=0; i <word.length;i++){
+			tmp += (1/_this.getFrequencyOfLetter(word[i]));
+		}
+		tmp *= word.length;
+		_this.score += Math.floor(tmp);
+	}
+
+	//***************************Listener********************
+
+	this.bubbleClickListener = function(position){
+	  console.log("You have clicked "+position);
+	}
+
+
 }
+
 
 // var alphaJuice = new game('letter-frequency.json','wordlist.json');
 // alphaJuice.init();
